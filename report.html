@@ -11890,11 +11890,15 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <ul>
-<li><p>When running the agent.py code the smartcab(white) did not move at all.</p>
-</li>
-<li><p>Driver is recieving both positive and negative rewards.</p>
-</li>
-<li><p>When there is  a green light with no oncoming traffic ,as the agent did not took any action ,hence it got negative reward as it is expected to move ,But while the light is red ,it got positive reward as it is supposed to stop and it is staitionary.</p>
+<li>When running the agent.py code the smartcab(white) did not move at all.</li>
+</ul>
+<ul>
+<li>Driver is recieving both positive and negative rewards. </li>
+</ul>
+<ul>
+<li><p>When there is  a green light and the smartcab can move(no other traffic on it's direction ) ,as the agent did not took any action ,hence it got negative reward as it is expected to move ,</p>
+<p>but when their is blockage even though there is green signal,it got positive rewards.</p>
+<p>While the light is red ,it got positive reward as it is supposed to stop and it is staitionary.</p>
 </li>
 </ul>
 
@@ -12965,7 +12969,7 @@ RU5ErkJggg==
 <ul>
 <li><p>Almost 40% of the time the driving agent is taking bad decisions. Almost 5% of the time it had major accident and 5% of the total actions caused minor accidents. So out of all bad decisions almost 25 % of the time the driver caused accident.</p>
 </li>
-<li><p>As the agent is driving randomly ,the rate of reliability does not make any sense</p>
+<li><p>The agent is driving randomly at it is not smart yet. So the chance of it reaching destination is very less. Hence the reliability is very poor.This lack of success does make sense as the agent is only exploring and not learning, collecting many negative rewards.</p>
 </li>
 <li><p>The agent is recieving mostly negative rewards for it's actions as per action reward is negative. Yes the rewards suggest it has been penalized heavily</p>
 </li>
@@ -13027,7 +13031,7 @@ RU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>Even though all features have some importance,but we can discard deadline ,because always the smartcab can reach the destination in minimum time possible by following waypoint. Also deadline have  discrete integers. Hence it will increase number of possible states very high.</p>
+<p>Even though all features have some importance,but we can discard deadline ,because always the smartcab can reach the destination in minimum time possible by following waypoint. Also deadline have  discrete integers. Hence our state space would blow up, we would suffer from the curse of dimensionality and it would take a long time for the q-matrix to converge. Also including the deadline could possibly influence the agent in making illegal moves when the deadline is near.</p>
 <p>But all other features are very much required. waypoint helps the smartcab to choose a direction which leads to the destination,hence it can help for better efficiency. inputs are obviously required for the smart cab to drive safely.</p>
 
 </div>
@@ -13062,10 +13066,10 @@ RU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>for waypoint 4 options are there
-for left,right,oncoming also 4 options are there 
-for light 2 option are there.</p>
-<p>So total number of state space is 4x4x4x4x2=512 states</p>
+<p>for waypoint 3 options are there,as waypoint won't be None ever,</p>
+<p>for each left,right,oncoming , 4 options are there</p>
+<p>for light 2 option are there.</p>
+<p>So total number of state space is 3x4x4x4x2=384 states</p>
 <p>I think this many states can be trainable with the model</p>
 
 </div>
@@ -16687,6 +16691,15 @@ bfYDAAAAAAAAAAAAAAAAAAAAAAATQVepsnUVj2YAAAAASUVORK5CYII=
  -- None : 1.95
  -- left : -4.82</p>
 <p>As None has highest value,so the agent won't move. This is correct.</p>
+<p>Example 3</p>
+<p>For state{waypoint= right ,traffic_light = red, agent_left = right, agent_right=forward, agent_oncoming=right}</p>
+<p>As the light is red,hence the smartcab should not move irrespective of other agent directions.</p>
+<p>from Q-learning result
+ -- forward : 0.00
+ -- right : 0.49
+ -- None : 0.00
+ -- left : 0.00</p>
+<p>As right has highest value,so the agent will move right.But it should not have move on a traffic light. Hence this is different than the optimal policy.</p>
 
 </div>
 </div>
@@ -16719,7 +16732,7 @@ bfYDAAAAAAAAAAAAAAAAAAAAAAATQVepsnUVj2YAAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>As we are randomly initializing the environment each time,hence future reward might not help.</p>
-<p>Smartcab does not have any information about the map,hence future reward won't help</p>
+<p>By considering future rewards it might happen that the smartcab will prefer an accident over being late and it will be difficult to assign rewards to overcome this issue. Hence only using current rewards,we can make sure that the smartcab is avoiding accident.</p>
 
 </div>
 </div>
